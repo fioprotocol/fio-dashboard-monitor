@@ -9,13 +9,13 @@ const bree = new Bree({
     {
       name: 'pending-txs',
       path: path.join(__dirname, 'pending-txs.ts'),
-      interval: '5m', // Runs every 5 minutes
+      interval: process.env.PENDING_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'no-txs',
       path: path.join(__dirname, 'no-txs.ts'),
-      interval: '5m', // Runs every 5 minutes
+      interval: process.env.NO_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
   ],
