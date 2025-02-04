@@ -73,7 +73,7 @@ async function checkPendingTransactions() {
         inline: false,
       }));
 
-      logger.warning(`⚠️ ${JOB_NAME} Alert`, {
+      logger.warn(`⚠️ ${JOB_NAME} Alert`, {
         message,
         count: pendingTxs.length,
         transactions: fields,

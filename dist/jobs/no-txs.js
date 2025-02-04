@@ -33,7 +33,7 @@ async function checkTransactions() {
         if (txs.length === 0) {
             // Create a message for Discord notification
             const message = `Found no transactions older than ${TIME_THRESHOLD_HOURS} hours`;
-            logger_1.default.warning(`⚠️ ${JOB_NAME} Alert`, {
+            logger_1.default.warn(`⚠️ ${JOB_NAME} Alert`, {
                 message,
             });
             // Send notification to Discord

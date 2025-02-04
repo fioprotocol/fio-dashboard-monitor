@@ -73,7 +73,7 @@ async function checkPendingTransactions() {
                 value: `Order: ${tx.number}, Ready status set at: ${new Date(tx.updatedAt).toISOString()}`,
                 inline: false,
             }));
-            logger_1.default.warning(`⚠️ ${JOB_NAME} Alert`, {
+            logger_1.default.warn(`⚠️ ${JOB_NAME} Alert`, {
                 message,
                 count: pendingTxs.length,
                 transactions: fields,

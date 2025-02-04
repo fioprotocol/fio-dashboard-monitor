@@ -7,34 +7,40 @@ exports.startJobs = void 0;
 const bree_1 = __importDefault(require("bree"));
 const path_1 = __importDefault(require("path"));
 const logger_1 = __importDefault(require("../config/logger"));
-// Initialize Bree
-const bree = new bree_1.default({
+const env_1 = require("../utils/env");
+const BREE_CONFIG = {
     root: false, // Disable default root directory lookup
     jobs: [
         {
             name: 'pending-txs',
-            path: path_1.default.join(__dirname, 'pending-txs.ts'),
+            // Use .js extension and handle both dev and prod environments
+            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'pending-txs.ts' : 'pending-txs.js'),
             interval: process.env.PENDING_TX_TIME_INTERVAL,
             timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
         },
         {
             name: 'no-txs',
-            path: path_1.default.join(__dirname, 'no-txs.ts'),
+            // Use .js extension and handle both dev and prod environments
+            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'no-txs.ts' : 'no-txs.js'),
             interval: process.env.NO_TX_TIME_INTERVAL,
             timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
         },
     ],
-    // Add TypeScript support
-    worker: {
-        workerData: {
-            tsconfig: path_1.default.join(process.cwd(), 'tsconfig.json'),
-        },
-        execArgv: ['--require', 'ts-node/register']
-    },
+    // Conditionally add TypeScript support only in development
+    worker: (0, env_1.isDevelopment)()
+        ? {
+            workerData: {
+                tsconfig: path_1.default.join(process.cwd(), 'tsconfig.json'),
+            },
+            execArgv: ['--require', 'ts-node/register']
+        }
+        : undefined,
     workerMessageHandler: message => {
         logger_1.default.info('JOB MESSAGE === ', message || '');
     },
-});
+};
+// Initialize Bree
+const bree = new bree_1.default(BREE_CONFIG);
 // Start all jobs
 const startJobs = () => {
     bree.start();
