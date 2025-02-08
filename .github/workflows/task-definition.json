@@ -90,6 +90,5 @@
     },
     "registeredAt": "2025-02-08T20:16:54.868Z",
     "registeredBy": "arn:aws:iam::916790350352:user/roman.garayev@eze.tech",
-    "enableFaultInjection": false,
     "tags": []
 }
