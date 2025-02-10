@@ -9,7 +9,15 @@ const jobs_1 = require("./jobs");
 const logger_1 = __importDefault(require("./config/logger"));
 const run = async () => {
     logger_1.default.info('Starting application...');
-    (0, jobs_1.startJobs)();
+    let jobName;
+    if (process.argv.includes('--job')) {
+        jobName = process.argv[process.argv.indexOf('--job') + 1];
+        if (!jobName) {
+            console.error('Please specify a job name');
+            process.exit(1);
+        }
+    }
+    (0, jobs_1.startJobs)(jobName);
 };
 exports.run = run;
 (0, exports.run)().catch((error) => {
