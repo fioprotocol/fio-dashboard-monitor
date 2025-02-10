@@ -10,7 +10,8 @@
     "test": "jest",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "dev:job": "ts-node src/index.ts --job"
   },
   "keywords": [],
   "author": "",

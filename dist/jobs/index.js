@@ -25,6 +25,12 @@ const BREE_CONFIG = {
             interval: process.env.NO_TX_TIME_INTERVAL,
             timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
         },
+        {
+            name: 'tx-errors-check',
+            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'tx-errors-check.ts' : 'tx-errors-check.js'),
+            interval: process.env.TX_ERRORS_TIME_INTERVAL,
+            timeout: '2m',
+        },
     ],
     // Conditionally add TypeScript support only in development
     worker: (0, env_1.isDevelopment)()
@@ -41,10 +47,24 @@ const BREE_CONFIG = {
 };
 // Initialize Bree
 const bree = new bree_1.default(BREE_CONFIG);
-// Start all jobs
-const startJobs = () => {
+// Start specific job or all jobs
+const startJobs = (jobName) => {
+    var _a;
+    if (jobName) {
+        // Validate job name
+        const validJobs = ((_a = BREE_CONFIG.jobs) === null || _a === void 0 ? void 0 : _a.map(job => job.name)) || [];
+        if (!validJobs.includes(jobName)) {
+            throw new Error(`Invalid job name: ${jobName}. Valid jobs are: ${validJobs.join(', ')}`);
+        }
+        bree.start();
+        bree.run(jobName);
+        logger_1.default.info(`Started single job: ${jobName}`);
+        return;
+    }
+    // Start all jobs if no specific job specified
     bree.start();
-    bree.run('no-txs'); // Run no-txs immediately
-    bree.run('pending-txs'); // Run pending-txs immediately
+    bree.run('no-txs');
+    bree.run('pending-txs');
+    bree.run('tx-errors-check');
 };
 exports.startJobs = startJobs;
