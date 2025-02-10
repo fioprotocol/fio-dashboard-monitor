@@ -1,10 +1,10 @@
-FROM node:16.14.2
+FROM node:22.13.1
 WORKDIR /usr/app
 
 COPY package.json /usr/app/
-RUN npm i --legacy-peer-deps
+RUN npm i
 
 COPY . .
 
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
