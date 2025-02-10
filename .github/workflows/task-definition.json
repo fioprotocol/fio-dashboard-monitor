@@ -8,7 +8,7 @@
             "secrets": [{
               "name": "DISCORD_WEBHOOK_URL",
               "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_WEBHOOK_URL"
-            }]
+            }],
             "portMappings": [
                 {
                     "name": "fio-dashboard-monitor-3000-tcp",
