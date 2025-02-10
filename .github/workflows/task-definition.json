@@ -5,6 +5,10 @@
             "name": "fio-dashboard-monitor",
             "image": "916790350352.dkr.ecr.us-west-2.amazonaws.com/fio-dashboard-monitor",
             "cpu": 0,
+            "secrets": [{
+              "name": "DISCORD_WEBHOOK_URL",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_WEBHOOK_URL"
+            }]
             "portMappings": [
                 {
                     "name": "fio-dashboard-monitor-3000-tcp",
