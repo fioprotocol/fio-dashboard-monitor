@@ -1,0 +1,154 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:916790350352:task-definition/fio-dashboard-monitor:1",
+    "containerDefinitions": [
+        {
+            "name": "fio-dashboard-monitor",
+            "image": "916790350352.dkr.ecr.us-east-1.amazonaws.com/fio-dashboard-monitor",
+            "cpu": 0,
+            "secrets": [{
+              "name": "DISCORD_WEBHOOK_URL",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_WEBHOOK_URL"
+            },
+             {
+              "name": "DB_HOST",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_HOST"
+             },
+             {
+              "name": "DB_NAME",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_NAME"
+             },
+            {
+              "name": "DB_PASSWORD",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PASSWORD"
+            },
+            {
+              "name": "DB_PORT",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PORT"
+            },
+            {
+              "name": "DB_USER",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_USER"
+            },
+            {
+              "name": "DISCORD_TITLE_PREFIX",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_TITLE_PREFIX"
+            },
+            {
+              "name": "NODE_ENV",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/NODE_ENV"
+            },
+            {
+              "name": "NO_TX_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_INTERVAL"
+            },
+            {
+              "name": "NO_TX_TIME_THRESHOLD_HOURS",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_THRESHOLD_HOURS"
+            },
+            {
+              "name": "PENDING_TX_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_INTERVAL"
+            },
+            {
+              "name": "PENDING_TX_TIME_THRESHOLD_MINUTES",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_THRESHOLD_MINUTES"
+            },
+            {
+              "name": "TX_ERRORS_LIMIT",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_LIMIT"
+            },
+            {
+              "name": "TX_ERRORS_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_INTERVAL"
+            },
+            {
+              "name": "TX_ERRORS_TIME_THRESHOLD_HOURS",
+              "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS"
+            }],
+            "portMappings": [
+                {
+                    "name": "fio-dashboard-monitor-3000-tcp",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/fio-dashboard-monitor",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "fio-dashboard-monitor",
+    "taskRoleArn": "arn:aws:iam::916790350352:role/ExecutionRole-dashboard-production",
+    "executionRoleArn": "arn:aws:iam::916790350352:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 1,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2025-02-08T20:16:54.868Z",
+    "registeredBy": "arn:aws:iam::916790350352:user/roman.garayev@eze.tech",
+    "tags": []
+}
