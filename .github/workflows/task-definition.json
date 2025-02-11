@@ -7,35 +7,63 @@
             "cpu": 0,
             "secrets": [{
               "name": "DISCORD_WEBHOOK_URL",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_WEBHOOK_URL",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_WEBHOOK_URL"
+            },
+             {
               "name": "DB_HOST",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_HOST",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_HOST"
+             },
+             {
               "name": "DB_NAME",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_NAME",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_NAME"
+             },
+            {
               "name": "DB_PASSWORD",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PASSWORD",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PASSWORD"
+            },
+            {
               "name": "DB_PORT",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PORT",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_PORT"
+            },
+            {
               "name": "DB_USER",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_USER",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DB_USER"
+            },
+            {
               "name": "DISCORD_TITLE_PREFIX",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_TITLE_PREFIX",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/DISCORD_TITLE_PREFIX"
+            },
+            {
               "name": "NODE_ENV",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NODE_ENV",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NODE_ENV"
+            },
+            {
               "name": "NO_TX_TIME_INTERVAL",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_INTERVAL"
+            },
+            {
               "name": "NO_TX_TIME_THRESHOLD_HOURS",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_THRESHOLD_HOURS",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/NO_TX_TIME_THRESHOLD_HOURS"
+            },
+            {
               "name": "PENDING_TX_TIME_INTERVAL",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_INTERVAL"
+            },
+            {
               "name": "PENDING_TX_TIME_THRESHOLD_MINUTES",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_THRESHOLD_MINUTES",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/PENDING_TX_TIME_THRESHOLD_MINUTES"
+            },
+            {
               "name": "TX_ERRORS_LIMIT",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_LIMIT",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_LIMIT"
+            },
+            {
               "name": "TX_ERRORS_TIME_INTERVAL",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_INTERVAL",
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_INTERVAL"
+            },
+            {
               "name": "TX_ERRORS_TIME_THRESHOLD_HOURS",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS"
+              "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS"
             }],
             "portMappings": [
                 {
