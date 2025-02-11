@@ -35,7 +35,7 @@
               "name": "TX_ERRORS_TIME_INTERVAL",
                 "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_INTERVAL",
               "name": "TX_ERRORS_TIME_THRESHOLD_HOURS",
-                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS",
+                "valueFrom": "arn:aws:ssm:us-west-2:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS"
             }],
             "portMappings": [
                 {
