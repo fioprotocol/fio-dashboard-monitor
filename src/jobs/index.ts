@@ -9,21 +9,27 @@ const BREE_CONFIG: Bree.BreeOptions = {
     {
       name: 'pending-txs',
       // Use .js extension and handle both dev and prod environments
-      path: path.join(__dirname, isDevelopment() ? 'pending-txs.ts' : 'pending-txs.js'),
+      path: path.join(__dirname, `pending-txs.${isDevelopment() ? 'ts' : 'js'}`),
       interval: process.env.PENDING_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'no-txs',
       // Use .js extension and handle both dev and prod environments
-      path: path.join(__dirname, isDevelopment() ? 'no-txs.ts' : 'no-txs.js'),
+      path: path.join(__dirname, `no-txs.${isDevelopment() ? 'ts' : 'js'}`),
       interval: process.env.NO_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'tx-errors-check',
-      path: path.join(__dirname, isDevelopment() ? 'tx-errors-check.ts' : 'tx-errors-check.js'),
+      path: path.join(__dirname, `tx-errors-check.${isDevelopment() ? 'ts' : 'js'}`),
       interval: process.env.TX_ERRORS_TIME_INTERVAL,
+      timeout: '2m',
+    },
+    {
+      name: 'aws-logs-check',
+      path: path.join(__dirname, `aws-logs-check.${isDevelopment() ? 'ts' : 'js'}`),
+      interval: process.env.AWS_LOGS_TIME_INTERVAL,
       timeout: '2m',
     },
   ],
@@ -53,7 +59,8 @@ export const startJobs = (jobName?: string) => {
       throw new Error(`Invalid job name: ${jobName}. Valid jobs are: ${validJobs.join(', ')}`);
     }
     
-    bree.start();
+    // Start the scheduler for the specific job
+    bree.start(jobName);
     bree.run(jobName);
     logger.info(`Started single job: ${jobName}`);
     return;
@@ -64,4 +71,5 @@ export const startJobs = (jobName?: string) => {
   bree.run('no-txs');
   bree.run('pending-txs');
   bree.run('tx-errors-check');
+  bree.run('aws-logs-check');
 };
