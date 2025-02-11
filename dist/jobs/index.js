@@ -14,21 +14,27 @@ const BREE_CONFIG = {
         {
             name: 'pending-txs',
             // Use .js extension and handle both dev and prod environments
-            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'pending-txs.ts' : 'pending-txs.js'),
+            path: path_1.default.join(__dirname, `pending-txs.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
             interval: process.env.PENDING_TX_TIME_INTERVAL,
             timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
         },
         {
             name: 'no-txs',
             // Use .js extension and handle both dev and prod environments
-            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'no-txs.ts' : 'no-txs.js'),
+            path: path_1.default.join(__dirname, `no-txs.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
             interval: process.env.NO_TX_TIME_INTERVAL,
             timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
         },
         {
             name: 'tx-errors-check',
-            path: path_1.default.join(__dirname, (0, env_1.isDevelopment)() ? 'tx-errors-check.ts' : 'tx-errors-check.js'),
+            path: path_1.default.join(__dirname, `tx-errors-check.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
             interval: process.env.TX_ERRORS_TIME_INTERVAL,
+            timeout: '2m',
+        },
+        {
+            name: 'aws-logs-check',
+            path: path_1.default.join(__dirname, `aws-logs-check.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
+            interval: process.env.AWS_LOGS_TIME_INTERVAL,
             timeout: '2m',
         },
     ],
@@ -66,5 +72,6 @@ const startJobs = (jobName) => {
     bree.run('no-txs');
     bree.run('pending-txs');
     bree.run('tx-errors-check');
+    bree.run('aws-logs-check'); // Run aws-logs-check immediately
 };
 exports.startJobs = startJobs;
