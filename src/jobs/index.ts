@@ -9,16 +9,28 @@ const BREE_CONFIG: Bree.BreeOptions = {
     {
       name: 'pending-txs',
       // Use .js extension and handle both dev and prod environments
-      path: path.join(__dirname, isDevelopment() ? 'pending-txs.ts' : 'pending-txs.js'),
+      path: path.join(__dirname, `pending-txs.${isDevelopment() ? 'ts' : 'js'}`),
       interval: process.env.PENDING_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'no-txs',
       // Use .js extension and handle both dev and prod environments
-      path: path.join(__dirname, isDevelopment() ? 'no-txs.ts' : 'no-txs.js'),
+      path: path.join(__dirname, `no-txs.${isDevelopment() ? 'ts' : 'js'}`),
       interval: process.env.NO_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
+    },
+    {
+      name: 'tx-errors-check',
+      path: path.join(__dirname, `tx-errors-check.${isDevelopment() ? 'ts' : 'js'}`),
+      interval: process.env.TX_ERRORS_TIME_INTERVAL,
+      timeout: '2m',
+    },
+    {
+      name: 'aws-logs-check',
+      path: path.join(__dirname, `aws-logs-check.${isDevelopment() ? 'ts' : 'js'}`),
+      interval: process.env.AWS_LOGS_TIME_INTERVAL,
+      timeout: '2m',
     },
   ],
   // Conditionally add TypeScript support only in development
@@ -38,9 +50,26 @@ const BREE_CONFIG: Bree.BreeOptions = {
 // Initialize Bree
 const bree = new Bree(BREE_CONFIG);
 
-// Start all jobs
-export const startJobs = () => {
+// Start specific job or all jobs
+export const startJobs = (jobName?: string) => {
+  if (jobName) {
+    // Validate job name
+    const validJobs = (BREE_CONFIG.jobs as Bree.JobOptions[])?.map(job => job.name) || [];
+    if (!validJobs.includes(jobName)) {
+      throw new Error(`Invalid job name: ${jobName}. Valid jobs are: ${validJobs.join(', ')}`);
+    }
+    
+    // Start the scheduler for the specific job
+    bree.start(jobName);
+    bree.run(jobName);
+    logger.info(`Started single job: ${jobName}`);
+    return;
+  }
+
+  // Start all jobs if no specific job specified
   bree.start();
-  bree.run('no-txs'); // Run no-txs immediately
-  bree.run('pending-txs'); // Run pending-txs immediately
+  bree.run('no-txs');
+  bree.run('pending-txs');
+  bree.run('tx-errors-check');
+  bree.run('aws-logs-check');
 };

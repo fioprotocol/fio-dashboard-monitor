@@ -4,7 +4,18 @@ import logger from './config/logger';
 
 export const run = async () => {
   logger.info('Starting application...');
-  startJobs();
+
+  let jobName;
+
+  if (process.argv.includes('--job')) {
+    jobName = process.argv[process.argv.indexOf('--job') + 1];
+    if (!jobName) {
+      console.error('Please specify a job name');
+      process.exit(1);
+    }
+  }
+
+  startJobs(jobName);
 };
 
 run().catch((error) => {
