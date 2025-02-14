@@ -8,8 +8,9 @@ const database_1 = require("../config/database");
 const discord_1 = require("../services/discord");
 const logger_1 = __importDefault(require("../config/logger"));
 const models_1 = require("../models");
+const env_1 = require("../utils/env");
 const JOB_NAME = 'NO-TXs';
-const TIME_THRESHOLD_HOURS = process.env.NO_TX_TIME_THRESHOLD_HOURS;
+const TIME_THRESHOLD_HOURS = env_1.envConfig.NO_TX_TIME_THRESHOLD_HOURS;
 const txQuery = `
   SELECT 
     bt.id,
