@@ -8,9 +8,10 @@ const database_1 = require("../config/database");
 const discord_1 = require("../services/discord");
 const logger_1 = __importDefault(require("../config/logger"));
 const models_1 = require("../models");
+const env_1 = require("../utils/env");
 const JOB_NAME = 'PENDING-TXs';
 const LIMIT = 30;
-const TIME_THRESHOLD_MINUTES = process.env.PENDING_TX_TIME_THRESHOLD_MINUTES;
+const TIME_THRESHOLD_MINUTES = env_1.envConfig.PENDING_TX_TIME_THRESHOLD_MINUTES;
 const pendingOrderItemsQuery = `
   SELECT 
     oi.id, 

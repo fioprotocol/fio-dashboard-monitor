@@ -9,7 +9,7 @@ const logger_1 = __importDefault(require("../config/logger"));
 const env_1 = require("../utils/env");
 class DiscordNotificationService {
     constructor() {
-        const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+        const webhookUrl = env_1.envConfig.DISCORD_WEBHOOK_URL;
         if (!webhookUrl) {
             throw new Error('DISCORD_WEBHOOK_URL is not defined in environment variables');
         }
@@ -19,7 +19,7 @@ class DiscordNotificationService {
         try {
             const embed = new discord_js_1.EmbedBuilder().setDescription(message).setTimestamp();
             if (options === null || options === void 0 ? void 0 : options.title) {
-                const titlePrefix = process.env.DISCORD_TITLE_PREFIX || '';
+                const titlePrefix = env_1.envConfig.DISCORD_TITLE_PREFIX || '';
                 embed.setTitle(`${titlePrefix} ${options.title}`);
             }
             // Set color based on level

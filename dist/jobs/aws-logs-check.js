@@ -7,25 +7,31 @@ require("../config/env");
 const client_cloudwatch_logs_1 = require("@aws-sdk/client-cloudwatch-logs");
 const logger_1 = __importDefault(require("../config/logger"));
 const discord_1 = require("../services/discord");
+const env_1 = require("../utils/env");
 const JOB_NAME = 'AWS-LOGS';
-const TIME_THRESHOLD_MINUTES = process.env.AWS_LOGS_TIME_THRESHOLD_MINUTES;
-const ERRORS = JSON.parse(process.env.AWS_LOGS_ERROR_PATTERNS_JSON);
-const THRESHOLD_LIMIT = parseInt(process.env.AWS_LOGS_THRESHOLD_LIMIT);
+const TIME_THRESHOLD_MINUTES = env_1.envConfig.AWS_LOGS_TIME_THRESHOLD_MINUTES;
+const ERRORS = JSON.parse(env_1.envConfig.AWS_LOGS_ERROR_PATTERNS_JSON);
+const THRESHOLD_LIMIT = parseInt(env_1.envConfig.AWS_LOGS_THRESHOLD_LIMIT);
+console.log(env_1.envConfig);
+const config = {
+    region: env_1.envConfig.AWS_REGION,
+};
+if ((0, env_1.isDevelopment)()) {
+    config.credentials = {
+        accessKeyId: env_1.envConfig.AWS_ACCESS_KEY_ID,
+        secretAccessKey: env_1.envConfig.AWS_SECRET_ACCESS_KEY,
+        sessionToken: env_1.envConfig.AWS_SESSION_TOKEN,
+    };
+}
 // Initialize CloudWatch Logs client
-const cloudWatchLogs = new client_cloudwatch_logs_1.CloudWatchLogs({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
-});
+const cloudWatchLogs = new client_cloudwatch_logs_1.CloudWatchLogs(config);
 async function checkAwsLogs() {
     try {
         const endTime = new Date();
         const startTime = new Date(endTime.getTime() - parseInt(TIME_THRESHOLD_MINUTES) * 60 * 1000);
         for (const error of ERRORS) {
             const response = await cloudWatchLogs.filterLogEvents({
-                logGroupName: process.env.AWS_LOG_GROUP_NAME,
+                logGroupName: env_1.envConfig.AWS_LOG_GROUP_NAME,
                 startTime: startTime.getTime(),
                 endTime: endTime.getTime(),
                 filterPattern: error,
@@ -54,8 +60,6 @@ async function checkAwsLogs() {
         }
         return {
             success: true,
-            // errorLogsCount: errorLogs.length,
-            // message: errorLogs.length > 0 ? 'Found error logs' : 'No error logs found',
         };
     }
     catch (error) {
@@ -67,8 +71,8 @@ async function checkAwsLogs() {
         });
         logger_1.default.error(`Error checking ${JOB_NAME}`, {
             error: error,
-            logGroup: process.env.AWS_LOG_GROUP_NAME,
-            region: process.env.AWS_REGION,
+            logGroup: env_1.envConfig.AWS_LOG_GROUP_NAME,
+            region: env_1.envConfig.AWS_REGION,
         });
         await discord_1.discordNotifier.sendNotification('Error checking AWS logs', {
             title: '⚠️ Error during AWS logs check',
