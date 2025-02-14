@@ -3,9 +3,10 @@ import { pool } from '../config/database';
 import { discordNotifier } from '../services/discord';
 import logger from '../config/logger';
 import { BlockchainTransaction } from '../models';
+import { envConfig } from '../utils/env';
 
 const JOB_NAME = 'NO-TXs';
-const TIME_THRESHOLD_HOURS = process.env.NO_TX_TIME_THRESHOLD_HOURS;
+const TIME_THRESHOLD_HOURS = envConfig.NO_TX_TIME_THRESHOLD_HOURS;
 
 const txQuery = `
   SELECT 

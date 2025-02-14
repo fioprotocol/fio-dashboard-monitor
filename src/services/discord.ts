@@ -1,12 +1,12 @@
 import { WebhookClient, EmbedBuilder } from 'discord.js';
 import logger from '../config/logger';
-import { isProduction } from '../utils/env';
+import { isProduction, envConfig } from '../utils/env';
 
 class DiscordNotificationService {
   private webhookClient: WebhookClient;
 
   constructor() {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+    const webhookUrl = envConfig.DISCORD_WEBHOOK_URL;
     if (!webhookUrl) {
       throw new Error('DISCORD_WEBHOOK_URL is not defined in environment variables');
     }
@@ -25,7 +25,7 @@ class DiscordNotificationService {
       const embed = new EmbedBuilder().setDescription(message).setTimestamp();
 
       if (options?.title) {
-        const titlePrefix = process.env.DISCORD_TITLE_PREFIX || '';
+        const titlePrefix = envConfig.DISCORD_TITLE_PREFIX || '';
         embed.setTitle(`${titlePrefix} ${options.title}`);
       }
 

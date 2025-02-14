@@ -3,10 +3,10 @@ import { pool } from '../config/database';
 import { discordNotifier } from '../services/discord';
 import logger from '../config/logger';
 import { Payment, ReferrerProfile, BlockchainTransaction } from '../models';
-
+import { envConfig } from '../utils/env';
 const JOB_NAME = 'PENDING-TXs';
 const LIMIT = 30;
-const TIME_THRESHOLD_MINUTES = process.env.PENDING_TX_TIME_THRESHOLD_MINUTES;
+const TIME_THRESHOLD_MINUTES = envConfig.PENDING_TX_TIME_THRESHOLD_MINUTES;
 
 const pendingOrderItemsQuery = `
   SELECT 

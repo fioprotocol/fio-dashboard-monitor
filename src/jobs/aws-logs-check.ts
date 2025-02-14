@@ -1,14 +1,15 @@
 import '../config/env';
-import { CloudWatchLogs, FilteredLogEvent } from '@aws-sdk/client-cloudwatch-logs';
+import { CloudWatchLogs } from '@aws-sdk/client-cloudwatch-logs';
 import logger from '../config/logger';
 import { discordNotifier } from '../services/discord';
-import { isDevelopment } from '../utils/env';
+import { isDevelopment, envConfig } from '../utils/env';
 
 const JOB_NAME = 'AWS-LOGS';
-const TIME_THRESHOLD_MINUTES = process.env.AWS_LOGS_TIME_THRESHOLD_MINUTES;
-const ERRORS = JSON.parse(process.env.AWS_LOGS_ERROR_PATTERNS_JSON as string);
-const THRESHOLD_LIMIT = parseInt(process.env.AWS_LOGS_THRESHOLD_LIMIT as string);
+const TIME_THRESHOLD_MINUTES = envConfig.AWS_LOGS_TIME_THRESHOLD_MINUTES;
+const ERRORS = JSON.parse(envConfig.AWS_LOGS_ERROR_PATTERNS_JSON as string);
+const THRESHOLD_LIMIT = parseInt(envConfig.AWS_LOGS_THRESHOLD_LIMIT as string);
 
+console.log(envConfig);
 const config: {
   region?: string;
   credentials?: {
@@ -17,13 +18,13 @@ const config: {
     sessionToken?: string;
   };
 } = {
-  region: process.env.AWS_REGION,
+  region: envConfig.AWS_REGION,
 };
 if (isDevelopment()) {
   config.credentials = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-    sessionToken: process.env.AWS_SESSION_TOKEN!,
+    accessKeyId: envConfig.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: envConfig.AWS_SECRET_ACCESS_KEY!,
+    sessionToken: envConfig.AWS_SESSION_TOKEN!,
   };
 }
 // Initialize CloudWatch Logs client
@@ -38,7 +39,7 @@ async function checkAwsLogs() {
 
     for (const error of ERRORS) {
       const response = await cloudWatchLogs.filterLogEvents({
-        logGroupName: process.env.AWS_LOG_GROUP_NAME,
+        logGroupName: envConfig.AWS_LOG_GROUP_NAME,
         startTime: startTime.getTime(),
         endTime: endTime.getTime(),
         filterPattern: error,
@@ -83,8 +84,8 @@ async function checkAwsLogs() {
 
     logger.error(`Error checking ${JOB_NAME}`, {
       error: error,
-      logGroup: process.env.AWS_LOG_GROUP_NAME,
-      region: process.env.AWS_REGION,
+      logGroup: envConfig.AWS_LOG_GROUP_NAME,
+      region: envConfig.AWS_REGION,
     });
 
     await discordNotifier.sendNotification('Error checking AWS logs', {
