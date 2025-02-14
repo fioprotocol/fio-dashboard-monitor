@@ -9,7 +9,6 @@ const TIME_THRESHOLD_MINUTES = envConfig.AWS_LOGS_TIME_THRESHOLD_MINUTES;
 const ERRORS = JSON.parse(envConfig.AWS_LOGS_ERROR_PATTERNS_JSON as string);
 const THRESHOLD_LIMIT = parseInt(envConfig.AWS_LOGS_THRESHOLD_LIMIT as string);
 
-console.log(envConfig);
 const config: {
   region?: string;
   credentials?: {
