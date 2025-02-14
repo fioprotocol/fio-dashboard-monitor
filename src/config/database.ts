@@ -1,11 +1,12 @@
 import { Pool } from 'pg';
+import { envConfig } from '../utils/env';
 
 const dbConfig = {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432'),
+  user: envConfig.DB_USER,
+  host: envConfig.DB_HOST,
+  database: envConfig.DB_NAME,
+  password: envConfig.DB_PASSWORD,
+  port: parseInt(envConfig.DB_PORT || '5432'),
 };
 
 export const pool = new Pool(dbConfig);

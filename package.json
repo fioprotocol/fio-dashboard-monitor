@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-cloudwatch-logs": "^3.744.0",
+    "@aws-sdk/client-cloudwatch-logs": "3.744.0",
     "bree": "9.2.4",
     "discord.js": "14.17.3",
     "dotenv": "16.4.5",

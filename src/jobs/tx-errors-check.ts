@@ -3,10 +3,11 @@ import { pool } from '../config/database';
 import { discordNotifier } from '../services/discord';
 import logger from '../config/logger';
 import { BlockchainTransaction } from '../models';
+import { envConfig } from '../utils/env';
 
 const JOB_NAME = 'TX-ERRORS';
-const LIMIT = process.env.TX_ERRORS_LIMIT ? parseInt(process.env.TX_ERRORS_LIMIT) : 300;
-const TIME_THRESHOLD_HOURS = process.env.TX_ERRORS_TIME_THRESHOLD_HOURS;
+const LIMIT = envConfig.TX_ERRORS_LIMIT ? parseInt(envConfig.TX_ERRORS_LIMIT) : 300;
+const TIME_THRESHOLD_HOURS = envConfig.TX_ERRORS_TIME_THRESHOLD_HOURS;
 
 const errorTxQuery = `
   SELECT 

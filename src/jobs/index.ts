@@ -1,7 +1,7 @@
 import Bree from 'bree';
 import path from 'path';
 import logger from '../config/logger';
-import { isDevelopment } from '../utils/env';
+import { isDevelopment, envConfig } from '../utils/env';
 
 const BREE_CONFIG: Bree.BreeOptions = {
   root: false, // Disable default root directory lookup
@@ -10,26 +10,26 @@ const BREE_CONFIG: Bree.BreeOptions = {
       name: 'pending-txs',
       // Use .js extension and handle both dev and prod environments
       path: path.join(__dirname, `pending-txs.${isDevelopment() ? 'ts' : 'js'}`),
-      interval: process.env.PENDING_TX_TIME_INTERVAL,
+      interval: envConfig.PENDING_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'no-txs',
       // Use .js extension and handle both dev and prod environments
       path: path.join(__dirname, `no-txs.${isDevelopment() ? 'ts' : 'js'}`),
-      interval: process.env.NO_TX_TIME_INTERVAL,
+      interval: envConfig.NO_TX_TIME_INTERVAL,
       timeout: '2m', // Job will be terminated if it runs longer than 2 minutes
     },
     {
       name: 'tx-errors-check',
       path: path.join(__dirname, `tx-errors-check.${isDevelopment() ? 'ts' : 'js'}`),
-      interval: process.env.TX_ERRORS_TIME_INTERVAL,
+      interval: envConfig.TX_ERRORS_TIME_INTERVAL,
       timeout: '2m',
     },
     {
       name: 'aws-logs-check',
       path: path.join(__dirname, `aws-logs-check.${isDevelopment() ? 'ts' : 'js'}`),
-      interval: process.env.AWS_LOGS_TIME_INTERVAL,
+      interval: envConfig.AWS_LOGS_TIME_INTERVAL,
       timeout: '2m',
     },
   ],
