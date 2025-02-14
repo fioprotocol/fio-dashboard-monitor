@@ -64,6 +64,30 @@
             {
               "name": "TX_ERRORS_TIME_THRESHOLD_HOURS",
               "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/TX_ERRORS_TIME_THRESHOLD_HOURS"
+            },
+            {
+                "name": "AWS_LOGS_TIME_INTERVAL",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_TIME_INTERVAL"
+            },
+            {
+                "name": "AWS_LOGS_TIME_THRESHOLD_MINUTES",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_TIME_THRESHOLD_MINUTES"
+            },
+            {
+                "name": "AWS_LOGS_ERROR_PATTERNS_JSON",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_ERROR_PATTERNS_JSON"
+            },
+            {
+                "name": "AWS_LOGS_THRESHOLD_LIMIT",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_THRESHOLD_LIMIT"
+            },
+            {
+                "name": "AWS_REGION",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_REGION"
+            },
+            {
+                "name": "AWS_LOG_GROUP_NAME",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOG_GROUP_NAME"
             }],
             "portMappings": [
                 {

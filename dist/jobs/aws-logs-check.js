@@ -12,7 +12,6 @@ const JOB_NAME = 'AWS-LOGS';
 const TIME_THRESHOLD_MINUTES = env_1.envConfig.AWS_LOGS_TIME_THRESHOLD_MINUTES;
 const ERRORS = JSON.parse(env_1.envConfig.AWS_LOGS_ERROR_PATTERNS_JSON);
 const THRESHOLD_LIMIT = parseInt(env_1.envConfig.AWS_LOGS_THRESHOLD_LIMIT);
-console.log(env_1.envConfig);
 const config = {
     region: env_1.envConfig.AWS_REGION,
 };
