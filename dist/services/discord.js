@@ -17,10 +17,22 @@ class DiscordNotificationService {
     }
     async sendNotification(message, options) {
         try {
+            // Constants for Discord limits
+            const TOTAL_LIMIT = 6000;
+            const ELLIPSIS = '...';
+            // Truncate message if too long (leaving room for timestamp and other fields)
+            const safeLimit = TOTAL_LIMIT - 5000; // Reserve space for other fields
+            if (message.length > safeLimit) {
+                message = message.slice(0, safeLimit - ELLIPSIS.length) + ELLIPSIS;
+            }
             const embed = new discord_js_1.EmbedBuilder().setDescription(message).setTimestamp();
             if (options === null || options === void 0 ? void 0 : options.title) {
                 const titlePrefix = env_1.envConfig.DISCORD_TITLE_PREFIX || '';
-                embed.setTitle(`${titlePrefix} ${options.title}`);
+                let title = `${titlePrefix} ${options.title}`;
+                if (title.length > 256) {
+                    title = title.slice(0, 253) + ELLIPSIS;
+                }
+                embed.setTitle(title);
             }
             // Set color based on level
             const colors = {
@@ -30,7 +42,27 @@ class DiscordNotificationService {
             };
             embed.setColor((options === null || options === void 0 ? void 0 : options.level) ? colors[options.level] : colors.info);
             if (options === null || options === void 0 ? void 0 : options.fields) {
-                embed.addFields(options.fields);
+                // Constants for field limits
+                const MAX_FIELDS = 10;
+                const ELLIPSIS = '...';
+                // Truncate number of fields if needed
+                let fieldsToProcess = options.fields;
+                if (fieldsToProcess.length > MAX_FIELDS) {
+                    fieldsToProcess = fieldsToProcess.slice(0, MAX_FIELDS - 1);
+                    // Add a field indicating that some fields were omitted
+                    fieldsToProcess.push({
+                        name: 'Note',
+                        value: `${options.fields.length - MAX_FIELDS + 1} more fields were omitted...`,
+                        inline: false,
+                    });
+                }
+                // Truncate fields content if needed
+                const processedFields = fieldsToProcess.map((field) => ({
+                    name: field.name.length > 128 ? field.name.slice(0, 128) + ELLIPSIS : field.name,
+                    value: field.value.length > 256 ? field.value.slice(0, 256) + ELLIPSIS : field.value,
+                    inline: field.inline,
+                }));
+                embed.addFields(processedFields);
             }
             if ((0, env_1.isProduction)()) {
                 await this.webhookClient.send({
@@ -39,6 +71,7 @@ class DiscordNotificationService {
             }
             else {
                 console.log(embed);
+                console.log(embed.data.fields);
             }
         }
         catch (error) {

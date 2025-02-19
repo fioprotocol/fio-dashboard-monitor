@@ -66,7 +66,7 @@ async function checkPendingTransactions() {
 
     if (pendingTxs.length > 0) {
       // Create a message for Discord notification
-      const message = 'Found pending transactions older than 30 minutes';
+      const message = `Found pending transactions older than ${TIME_THRESHOLD_MINUTES} minutes`;
       const fields = pendingTxs.map((tx) => ({
         name: `Order item ID: ${tx.id}`,
         value: `Order: ${tx.number}, Ready status set at: ${new Date(tx.updatedAt).toISOString()}`,

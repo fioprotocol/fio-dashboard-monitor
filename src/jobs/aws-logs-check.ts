@@ -49,12 +49,12 @@ async function checkAwsLogs() {
       if (errorLogs.length > THRESHOLD_LIMIT) {
         const message = `Found ${errorLogs.length} error logs in the last ${TIME_THRESHOLD_MINUTES} minutes`;
         const fields = errorLogs
+          .slice(0, 25) // Limit to 25 fields for Discord
           .map((log, index) => ({
             name: `Error Log ${index + 1}`,
             value: `${log.message}\nTimestamp: ${new Date(log.timestamp || 0).toISOString()}`,
             inline: false,
-          }))
-          .slice(0, 25); // Limit to 25 fields for Discord
+          }));
 
         logger.warn(`⚠️ ${JOB_NAME} Alert`, {
           message,
