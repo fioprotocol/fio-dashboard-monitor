@@ -27,9 +27,7 @@ const txQuery = `
 async function checkTransactions() {
     try {
         // Query transactions older than 30 minutes
-        const result = await database_1.pool.query(txQuery, [
-            models_1.BlockchainTransaction.STATUS.SUCCESS,
-        ]);
+        const result = await database_1.pool.query(txQuery, [models_1.BlockchainTransaction.STATUS.SUCCESS]);
         const txs = result.rows;
         if (txs.length === 0) {
             // Create a message for Discord notification

@@ -22,12 +22,10 @@ const txQuery = `
   LIMIT 1
 `;
 
-async function checkTransactions() {
+async function checkTransactions(): Promise<{ success: boolean; message: string; error?: string }> {
   try {
     // Query transactions older than 30 minutes
-    const result = await pool.query(txQuery, [
-      BlockchainTransaction.STATUS.SUCCESS,
-    ]);
+    const result = await pool.query(txQuery, [BlockchainTransaction.STATUS.SUCCESS]);
     const txs = result.rows;
 
     if (txs.length === 0) {

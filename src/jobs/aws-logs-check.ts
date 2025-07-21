@@ -29,7 +29,11 @@ if (isDevelopment()) {
 // Initialize CloudWatch Logs client
 const cloudWatchLogs = new CloudWatchLogs(config);
 
-async function checkAwsLogs() {
+async function checkAwsLogs(): Promise<{
+  success: boolean;
+  error?: string;
+  message?: string;
+}> {
   try {
     const endTime = new Date();
     const startTime = new Date(

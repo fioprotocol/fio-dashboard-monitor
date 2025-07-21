@@ -5,6 +5,8 @@ import logger from '../config/logger';
 import { BlockchainTransaction } from '../models';
 import { envConfig } from '../utils/env';
 
+import { BlockchainTransactionType } from '../types/blockchain-transaction';
+
 const JOB_NAME = 'TX-ERRORS';
 const LIMIT = envConfig.TX_ERRORS_LIMIT ? parseInt(envConfig.TX_ERRORS_LIMIT) : 300;
 const TIME_THRESHOLD_HOURS = envConfig.TX_ERRORS_TIME_THRESHOLD_HOURS;
@@ -25,7 +27,12 @@ const errorTxQuery = `
   LIMIT $2
 `;
 
-async function checkErrorTransactions() {
+async function checkErrorTransactions(): Promise<{
+  success: boolean;
+  errorTransactionsCount?: number;
+  message: string;
+  error?: string;
+}> {
   try {
     const result = await pool.query(errorTxQuery, [BlockchainTransaction.STATUS.SUCCESS, LIMIT]);
     const errorTxs = result.rows;
@@ -43,9 +50,14 @@ async function checkErrorTransactions() {
       }, {});
 
       // Find the error type with the most occurrences
-      const mostFrequentError = Object.entries(errorsByType).reduce<{ type: string; txs: any[] }>(
+      const mostFrequentError = Object.entries(errorsByType).reduce<{
+        type: string;
+        txs: BlockchainTransactionType[];
+      }>(
         (most, [type, txs]) => {
-          return (txs as any[]).length > most.txs.length ? { type, txs: txs as any[] } : most;
+          return (txs as BlockchainTransactionType[]).length > most.txs.length
+            ? { type, txs: txs as BlockchainTransactionType[] }
+            : most;
         },
         { type: '', txs: [] },
       );
@@ -53,7 +65,7 @@ async function checkErrorTransactions() {
       const fields = [
         {
           name: 'Most common error',
-          value: `${mostFrequentError.type} (${(mostFrequentError.txs as any[]).length} occurrences)`,
+          value: `${mostFrequentError.type} (${(mostFrequentError.txs as BlockchainTransactionType[]).length} occurrences)`,
           inline: false,
         },
       ];

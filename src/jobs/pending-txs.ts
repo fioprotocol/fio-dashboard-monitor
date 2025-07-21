@@ -52,7 +52,12 @@ const pendingOrderItemsQuery = `
   LIMIT $5
 `;
 
-async function checkPendingTransactions() {
+async function checkPendingTransactions(): Promise<{
+  success: boolean;
+  pendingTransactionsCount?: number;
+  message: string;
+  error?: string;
+}> {
   try {
     // Query transactions older than 30 minutes
     const result = await pool.query(pendingOrderItemsQuery, [

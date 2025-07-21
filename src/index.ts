@@ -2,7 +2,7 @@ import './config/env';
 import { startJobs } from './jobs';
 import logger from './config/logger';
 
-export const run = async () => {
+export const run = async (): Promise<void> => {
   logger.info('Starting application...');
 
   let jobName;

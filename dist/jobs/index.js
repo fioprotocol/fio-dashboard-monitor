@@ -37,6 +37,12 @@ const BREE_CONFIG = {
             interval: env_1.envConfig.AWS_LOGS_TIME_INTERVAL,
             timeout: '2m',
         },
+        {
+            name: 'missing-txs-check',
+            path: path_1.default.join(__dirname, `missing-txs-check.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
+            interval: env_1.envConfig.MISSING_TX_TIME_INTERVAL,
+            timeout: '2m',
+        },
     ],
     // Conditionally add TypeScript support only in development
     worker: (0, env_1.isDevelopment)()
@@ -44,10 +50,10 @@ const BREE_CONFIG = {
             workerData: {
                 tsconfig: path_1.default.join(process.cwd(), 'tsconfig.json'),
             },
-            execArgv: ['--require', 'ts-node/register']
+            execArgv: ['--require', 'ts-node/register'],
         }
         : undefined,
-    workerMessageHandler: message => {
+    workerMessageHandler: (message) => {
         logger_1.default.info('JOB MESSAGE === ', message || '');
     },
 };
@@ -58,7 +64,7 @@ const startJobs = (jobName) => {
     var _a;
     if (jobName) {
         // Validate job name
-        const validJobs = ((_a = BREE_CONFIG.jobs) === null || _a === void 0 ? void 0 : _a.map(job => job.name)) || [];
+        const validJobs = ((_a = BREE_CONFIG.jobs) === null || _a === void 0 ? void 0 : _a.map((job) => job.name)) || [];
         if (!validJobs.includes(jobName)) {
             throw new Error(`Invalid job name: ${jobName}. Valid jobs are: ${validJobs.join(', ')}`);
         }
@@ -74,5 +80,6 @@ const startJobs = (jobName) => {
     bree.run('pending-txs');
     bree.run('tx-errors-check');
     bree.run('aws-logs-check');
+    bree.run('missing-txs-check');
 };
 exports.startJobs = startJobs;
