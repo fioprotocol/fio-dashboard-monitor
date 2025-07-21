@@ -84,9 +84,15 @@ async function checkMissingTransactions(): Promise<{
     logger.info(`Starting ${JOB_NAME}...`);
 
     // Set date to current date minus specified minutes
-    const thresholdTime = new Date(
-      Date.now() - parseInt(TIME_THRESHOLD_MINUTES as string) * 60 * 1000,
-    );
+    const thresholdMinutes = parseInt(TIME_THRESHOLD_MINUTES as string);
+
+    if (!TIME_THRESHOLD_MINUTES || isNaN(thresholdMinutes) || thresholdMinutes <= 0) {
+      throw new Error(
+        `Invalid MISSING_TX_TIME_THRESHOLD_MINUTES: "${TIME_THRESHOLD_MINUTES}". Must be a positive number.`,
+      );
+    }
+
+    const thresholdTime = new Date(Date.now() - thresholdMinutes * 60 * 1000);
 
     logger.info(`Checking orders from ${thresholdTime.toISOString()} onwards`);
 
