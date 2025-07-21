@@ -88,6 +88,14 @@
             {
                 "name": "AWS_LOG_GROUP_NAME",
                 "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOG_GROUP_NAME"
+            },
+            {
+                "name": "MISSING_TX_TIME_THRESHOLD_MINUTES",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/MISSING_TX_TIME_THRESHOLD_MINUTES"
+            },
+            {
+                "name": "MISSING_TX_TIME_INTERVAL",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/MISSING_TX_TIME_INTERVAL"
             }],
             "portMappings": [
                 {
