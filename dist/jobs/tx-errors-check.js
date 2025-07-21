@@ -43,7 +43,9 @@ async function checkErrorTransactions() {
             }, {});
             // Find the error type with the most occurrences
             const mostFrequentError = Object.entries(errorsByType).reduce((most, [type, txs]) => {
-                return txs.length > most.txs.length ? { type, txs: txs } : most;
+                return txs.length > most.txs.length
+                    ? { type, txs: txs }
+                    : most;
             }, { type: '', txs: [] });
             const fields = [
                 {

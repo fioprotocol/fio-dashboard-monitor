@@ -17,8 +17,8 @@ async function testConnection() {
             level: 'info',
             fields: [
                 { name: 'Timestamp', value: timestamp.toString(), inline: true },
-                { name: 'Status', value: 'Connected', inline: true }
-            ]
+                { name: 'Status', value: 'Connected', inline: true },
+            ],
         });
     }
     catch (error) {
@@ -28,8 +28,8 @@ async function testConnection() {
             level: 'error',
             fields: [
                 { name: 'Error', value: error.message, inline: false },
-                { name: 'Timestamp', value: new Date().toISOString(), inline: true }
-            ]
+                { name: 'Timestamp', value: new Date().toISOString(), inline: true },
+            ],
         });
     }
 }

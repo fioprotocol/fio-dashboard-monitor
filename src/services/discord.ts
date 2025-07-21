@@ -20,7 +20,7 @@ class DiscordNotificationService {
       level?: 'info' | 'warning' | 'error';
       fields?: { name: string; value: string; inline?: boolean }[];
     },
-  ) {
+  ): Promise<void> {
     try {
       // Constants for Discord limits
       const TOTAL_LIMIT = 6000;
