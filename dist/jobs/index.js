@@ -37,12 +37,6 @@ const BREE_CONFIG = {
             interval: env_1.envConfig.AWS_LOGS_TIME_INTERVAL,
             timeout: '2m',
         },
-        {
-            name: 'missing-txs-check',
-            path: path_1.default.join(__dirname, `missing-txs-check.${(0, env_1.isDevelopment)() ? 'ts' : 'js'}`),
-            interval: env_1.envConfig.MISSING_TX_TIME_INTERVAL,
-            timeout: '2m',
-        },
     ],
     // Conditionally add TypeScript support only in development
     worker: (0, env_1.isDevelopment)()
@@ -80,6 +74,5 @@ const startJobs = (jobName) => {
     bree.run('pending-txs');
     bree.run('tx-errors-check');
     bree.run('aws-logs-check');
-    bree.run('missing-txs-check');
 };
 exports.startJobs = startJobs;
