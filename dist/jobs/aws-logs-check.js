@@ -11,6 +11,7 @@ const env_1 = require("../utils/env");
 const JOB_NAME = 'AWS-LOGS';
 const TIME_THRESHOLD_MINUTES = env_1.envConfig.AWS_LOGS_TIME_THRESHOLD_MINUTES;
 const ERRORS = JSON.parse(env_1.envConfig.AWS_LOGS_ERROR_PATTERNS_JSON);
+const ERRORS_WITHOUT_LIMIT = JSON.parse(env_1.envConfig.AWS_LOGS_ERROR_PATTERNS_JSON_WITHOUT_LIMIT);
 const THRESHOLD_LIMIT = parseInt(env_1.envConfig.AWS_LOGS_THRESHOLD_LIMIT);
 const config = {
     region: env_1.envConfig.AWS_REGION,
@@ -28,7 +29,8 @@ async function checkAwsLogs() {
     try {
         const endTime = new Date();
         const startTime = new Date(endTime.getTime() - parseInt(TIME_THRESHOLD_MINUTES) * 60 * 1000);
-        for (const error of ERRORS) {
+        const errorPatterns = ERRORS.concat(ERRORS_WITHOUT_LIMIT);
+        for (const error of errorPatterns) {
             const response = await cloudWatchLogs.filterLogEvents({
                 logGroupName: env_1.envConfig.AWS_LOG_GROUP_NAME,
                 startTime: startTime.getTime(),
@@ -36,7 +38,8 @@ async function checkAwsLogs() {
                 filterPattern: error,
             });
             const errorLogs = response.events || [];
-            if (errorLogs.length > THRESHOLD_LIMIT) {
+            if (errorLogs.length > THRESHOLD_LIMIT ||
+                (errorLogs.length > 0 && ERRORS_WITHOUT_LIMIT.includes(error))) {
                 const message = `Found ${errorLogs.length} error logs in the last ${TIME_THRESHOLD_MINUTES} minutes`;
                 const fields = errorLogs
                     .slice(0, 25) // Limit to 25 fields for Discord
