@@ -78,6 +78,10 @@
                 "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_ERROR_PATTERNS_JSON"
             },
             {
+                "name": "AWS_LOGS_ERROR_PATTERNS_JSON_WITHOUT_LIMIT",
+                "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_ERROR_PATTERNS_JSON_WITHOUT_LIMIT"
+            },
+            {
                 "name": "AWS_LOGS_THRESHOLD_LIMIT",
                 "valueFrom": "arn:aws:ssm:us-east-1:916790350352:parameter/ECS-CLUSTER/health-monitor/AWS_LOGS_THRESHOLD_LIMIT"
             },
