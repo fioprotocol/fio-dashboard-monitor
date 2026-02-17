@@ -10,6 +10,9 @@ import { BlockchainTransactionType } from '../types/blockchain-transaction';
 const JOB_NAME = 'TX-ERRORS';
 const LIMIT = envConfig.TX_ERRORS_LIMIT ? parseInt(envConfig.TX_ERRORS_LIMIT) : 300;
 const TIME_THRESHOLD_HOURS = envConfig.TX_ERRORS_TIME_THRESHOLD_HOURS;
+const PENDING_GRACE_PERIOD_MINUTES = envConfig.TX_ERRORS_PENDING_GRACE_PERIOD_MINUTES
+  ? parseInt(envConfig.TX_ERRORS_PENDING_GRACE_PERIOD_MINUTES)
+  : 15;
 
 const errorTxQuery = `
   SELECT 
@@ -23,6 +26,17 @@ const errorTxQuery = `
   LEFT JOIN "blockchain-transaction-event-logs" btel ON bt.id = btel."blockchainTransactionId"
   WHERE bt."status" != $1
     AND bt."createdAt" > NOW() - INTERVAL '${TIME_THRESHOLD_HOURS} hours'
+    AND bt."createdAt" < NOW() - INTERVAL '${PENDING_GRACE_PERIOD_MINUTES} minutes'
+    AND NOT EXISTS (
+      SELECT 1
+      FROM "order-items-status" ois_tx
+      JOIN "order-items" oi_tx ON oi_tx.id = ois_tx."orderItemId"
+      JOIN "order-items" oi_sibling ON oi_sibling."orderId" = oi_tx."orderId"
+      JOIN "order-items-status" ois_sibling ON ois_sibling."orderItemId" = oi_sibling.id
+      WHERE ois_tx."blockchainTransactionId" = bt.id
+      AND ois_sibling."txStatus" IN (${BlockchainTransaction.STATUS.READY}, ${BlockchainTransaction.STATUS.PENDING})
+      AND ois_sibling."updatedAt" >= NOW() - INTERVAL '${TIME_THRESHOLD_HOURS} hours'
+    )
   ORDER BY bt.id DESC
   LIMIT $2
 `;
@@ -38,7 +52,7 @@ async function checkErrorTransactions(): Promise<{
     const errorTxs = result.rows;
 
     if (errorTxs.length === LIMIT) {
-      const message = `Found at least ${LIMIT} transactions in error state within ${TIME_THRESHOLD_HOURS} hours`;
+      const message = `Found at least ${LIMIT} transactions in error state within ${TIME_THRESHOLD_HOURS} hours (excluding last ${PENDING_GRACE_PERIOD_MINUTES} minutes)`;
 
       const errorsByType = errorTxs.reduce((acc, tx) => {
         const errorType = tx?.data?.errorType;
