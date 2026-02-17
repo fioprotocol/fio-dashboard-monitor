@@ -48,6 +48,14 @@ const pendingOrderItemsQuery = `
   WHERE ois."paymentStatus" = $3 
     AND ois."txStatus" = $4
     AND ois."updatedAt" < NOW() - INTERVAL '${TIME_THRESHOLD_MINUTES} minutes'
+    AND NOT EXISTS (
+      SELECT 1
+      FROM "order-items-status" ois_active
+      INNER JOIN "order-items" oi_active ON oi_active.id = ois_active."orderItemId"
+      WHERE oi_active."orderId" = oi."orderId"
+      AND ois_active."txStatus" != ${BlockchainTransaction.STATUS.READY}
+      AND ois_active."updatedAt" >= NOW() - INTERVAL '${TIME_THRESHOLD_MINUTES} minutes'
+    )
   ORDER BY oi.id
   LIMIT $5
 `;
